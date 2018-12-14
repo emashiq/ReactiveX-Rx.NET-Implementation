@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using ReactiveX.Core;
 using ReactiveX.Core.Extension;
 using Reactive_Extension_App.ReactiveX.Observables;
@@ -10,12 +11,21 @@ namespace Reactive_Extension_App
     {
         static void Main(string[] args)
         {
-            PrintCurrentDateInMiliSecondObservables printCurrentDateInMiliSecondObservables = new PrintCurrentDateInMiliSecondObservables();
-            PrintCurrentDateInMiliSecondObserver printCurrentDateInMiliSecondObserver = new PrintCurrentDateInMiliSecondObserver();
-            printCurrentDateInMiliSecondObservables.PrintUnixTimestamp();
-            Console.WriteLine("-------------------------");
-            printCurrentDateInMiliSecondObservables.Subscribe(printCurrentDateInMiliSecondObserver);
+           var asyncSubject = new AsyncSubject<string>();
+            asyncSubject.OnNext("this");
+            asyncSubject.OnNext(" is");
+            asyncSubject.OnNext(" my");
+            asyncSubject.OnNext(" country");
+            PrintItems(asyncSubject);
+            asyncSubject.OnCompleted();
             Console.ReadKey();
+
         }
+
+        static void PrintItems(IObservable<string> items)
+        {
+            items.Subscribe(Console.Write);
+        }
+        
     }
 }
